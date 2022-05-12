@@ -1,6 +1,6 @@
-# Microcontroladores-e-Sistemas-Embarcados
+Microcontroladores-e-Sistemas-Embarcados
 
-#projeto Fechadura Smart:
+# Projeto Fechadura Smart:
 
 MC -> raspberry pi pico
 

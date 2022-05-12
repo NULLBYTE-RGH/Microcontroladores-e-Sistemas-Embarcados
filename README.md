@@ -1,5 +1,7 @@
 # Microcontroladores-e-Sistemas-Embarcados
 
+#projeto Fechadura Smart:
+
 MC -> raspberry pi pico
 
 Leitor de Digital DY50, com uso da API: PyFingerprint

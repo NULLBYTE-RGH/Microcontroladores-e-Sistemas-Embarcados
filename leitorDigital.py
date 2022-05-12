@@ -116,7 +116,7 @@ class leitorDigital(object):
         #------------------------------------------------------- 
         def ValidarDigital(self,opcao = 0,index = 0):
             """
-            opcao = 0 leitura padrao e busca entre todas as digitais salvas, retornando o indic do template e pontuação de coincidencia
+            opcao = 0 leitura padrao e busca entre todas as digitais salvas, retornando o indice do template e pontuação de coincidencia
             opcao = 1 validação de 1 digital especifica após a criação do template, para verificar consistencia, necessario o index do template da mesma.
             opcao = 2 cria e armazena a combinação das 2 digitais em um tamplate
             """

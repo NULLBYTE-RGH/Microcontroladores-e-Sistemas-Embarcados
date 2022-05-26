@@ -2,7 +2,9 @@ Microcontroladores-e-Sistemas-Embarcados
 
 # Projeto Fechadura Smart:
 
-MC -> raspberry pi pico
+## Micro Controlador: raspberry pi pico
+
+## Lista de componentes:
 
 - Leitor de Digital DY50
 - Teclado Matricial 4x4

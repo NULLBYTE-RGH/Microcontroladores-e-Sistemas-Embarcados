@@ -1,4 +1,8 @@
 import leitorDigital
+from machine import Pin
+import Tranca
+import time
+import Teclado
     
 def Iniciar():
     try:
@@ -12,5 +16,9 @@ def Iniciar():
             print(e)
 
 
-digital = Iniciar()
-digital.SalvarDigital()       
+
+#T = Teclado.Teclado()
+#T.LerTeclado()
+#digital = Iniciar()
+#digital.SalvarDigital()
+#digital.ValidarDigital()

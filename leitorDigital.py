@@ -1,13 +1,17 @@
 import pyfingerprint, time
 from machine import UART, Pin
+import Tranca
 
 ####################PARAMETROS###################
 __PinoTX=4
 __PinoRX=5
 __Frequencia=6
 __UARTPICO=1
-__PontosAceitavel = 600
+__PontosAceitavel = 200
+__GPIOTransistor = 22
 #################################################
+
+tranca = 0
 
 class leitorDigital(object):
     
@@ -32,13 +36,17 @@ class leitorDigital(object):
             self.__Frequencia = Frequencia
             self.__UARTPICO = UARTPICO
             self.__PontosAceitavel = PontosAceitavel
+            self.tranca = Tranca.Tranca(self.__GPIOTransistor)
             
             self.uart = UART(__UARTPICO,9600*__Frequencia, tx=Pin(__PinoTX), rx=Pin(__PinoRX))
             self.Digital = pyfingerprint.PyFingerprint(self.uart)
             #self.__iniciar()
             print('Digitais salvas: ' + str(self.Digital.getTemplateCount()) +'/'+ str(self.Digital.getStorageCapacity()))
         
-        #-------------------------------------------------------     
+        #-------------------------------------------------------
+        def DeletarDigital(self, index):
+            self.Digital.deleteTemplate(index)
+        #-------------------------------------------------------   
         def SalvarDigital(self):
             
             print("\t\t========>Cadastrando Nova Digital!<========\n\n")
@@ -60,7 +68,6 @@ class leitorDigital(object):
                     
                     print('Semelhança baixa!\nRefazendo leitura.....\n')
                     self.Digital.deleteTemplate(Digitais)
-                    print("================================")
                     self.SalvarDigital()
             else:
                 
@@ -71,7 +78,6 @@ class leitorDigital(object):
                 else:
                     print('Semelhança baixa!\nRefazendo leitura.....\n')
                     self.Digital.deleteTemplate(Digitais)
-                    print("================================")
                     self.SalvarDigital()
         #-------------------------------------------------------
         def __LerDigital(self,Buffer = 0):
@@ -116,7 +122,7 @@ class leitorDigital(object):
         #------------------------------------------------------- 
         def ValidarDigital(self,opcao = 0,index = 0):
             """
-            opcao = 0 leitura padrao e busca entre todas as digitais salvas, retornando o indice do template e pontuação de coincidencia
+            opcao = 0 leitura padrao e busca entre todas as digitais salvas, retornando o indic do template e pontuação de coincidencia
             opcao = 1 validação de 1 digital especifica após a criação do template, para verificar consistencia, necessario o index do template da mesma.
             opcao = 2 cria e armazena a combinação das 2 digitais em um tamplate
             """
@@ -126,12 +132,18 @@ class leitorDigital(object):
                 Template = self.Digital.searchTemplate()
                 if (Template[0] != -1 and Template[1] != -1 ):
                     print("Digital reconhecida!")
+                    #tranca = Tranca.Tranca(22)
+                    self.tranca.Destrancar()
+                    time.sleep(1)
+                    self.tranca.Trancar()
                     print("Template numero : " + str(Template[0]))
                     print("Pontos : "+ str(Template[1]))
+                    print("================")
                     
                 else :
             
                     print("Digital nao encontrada.")
+                    print("================")
                         
             elif opcao == 1 :
                 
@@ -160,3 +172,4 @@ class leitorDigital(object):
     except Exception as e:
         print('ERRO : ' + str(e))
         exit(1)
+

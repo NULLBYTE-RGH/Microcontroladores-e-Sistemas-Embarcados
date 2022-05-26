@@ -2,7 +2,7 @@ Microcontroladores-e-Sistemas-Embarcados
 
 # Projeto Fechadura Smart:
 
-## microcontrolador: raspberry pi pico
+## Microcontrolador: raspberry pi pico
 
 ## Lista de componentes:
 

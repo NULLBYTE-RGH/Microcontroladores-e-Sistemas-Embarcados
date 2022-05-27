@@ -56,7 +56,7 @@ class Teclado(object):
                         tecla = __teclas[Linha][Coluna]
                         if tecla != '':
                             lidos = lidos + tecla
-                        sleep(0.5)
+                        sleep(0.1)
         return lidos
 
     def Criar_Senha(self, id, Tamanho_Senha):

@@ -1,6 +1,6 @@
 from machine import Pin
-from time import sleep
-
+import time
+import Tranca
 ####################PARAMETROS###################
 __Pino1=2
 __Pino2=3
@@ -10,6 +10,7 @@ __Pino5=6
 __Pino6=7
 __Pino7=8
 __Pino8=9
+__GPIOTransistor = 22
 __teclas = [['1', '2', '3', 'A'], ['4', '5', '6', 'B'], ['7', '8', '9', 'C'], ['*', '0', '#', 'D']]
 #################################################
 
@@ -23,8 +24,9 @@ class Teclado(object):
 
         self.Lista_Linha_Pinos = [Pin(Pino, mode=Pin.OUT) for Pino in Linhas]
 
-
         self.Lista_Coluna_Pinos = [Pin(Pino, mode=Pin.IN, pull=Pin.PULL_DOWN) for Pino in Colunas]
+        
+        self.tranca = Tranca.Tranca(__GPIOTransistor)
         
         for Linha in range(0,4):
             for Coluna in range(0,4):
@@ -56,7 +58,7 @@ class Teclado(object):
                         tecla = __teclas[Linha][Coluna]
                         if tecla != '':
                             lidos = lidos + tecla
-                        sleep(0.1)
+                        time.sleep(0.3)
         return lidos
 
     def Criar_Senha(self, id, Tamanho_Senha):
@@ -87,4 +89,30 @@ class Teclado(object):
         except Exception as e:
             print(e)
             return -1
-
+        
+    def Validar_Senha(self, Tamanho_Senha):
+        acesso = 0
+        try:
+            print("Digite a Senha:")
+            senha = self.LerTeclado(Tamanho_Senha)
+            print(senha)
+            arquivo = open('Usuarios.txt', 'r')
+            for linha in arquivo:
+                item = linha.split(",")
+                if str(item[2]) == str(senha):
+                    print("Acesso Liberado "+ item[1])
+                    acesso = 1
+                    self.tranca.Destrancar()
+                    time.sleep(1)
+                    self.tranca.Trancar()
+                    return 1
+                    break
+            if acesso == 0:
+                print("Acesso negado!")
+                
+            arquivo.close()
+            acesso = 1
+            return 0
+        except Exception as e:
+            print(e)
+            return -1

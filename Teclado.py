@@ -11,6 +11,7 @@ __Pino6=7
 __Pino7=8
 __Pino8=9
 __GPIOTransistor = 22
+__Tamanho_Senha = 4
 __teclas = [['1', '2', '3', 'A'], ['4', '5', '6', 'B'], ['7', '8', '9', 'C'], ['*', '0', '#', 'D']]
 #################################################
 
@@ -61,7 +62,7 @@ class Teclado(object):
                         time.sleep(0.3)
         return lidos
 
-    def Criar_Senha(self, id, Tamanho_Senha):
+    def Criar_Senha(self, id, Tamanho_Senha = __Tamanho_Senha):
         
         try:
             arquivo = open('Usuarios.txt', 'r')
@@ -90,7 +91,7 @@ class Teclado(object):
             print(e)
             return -1
         
-    def Validar_Senha(self, Tamanho_Senha):
+    def Validar_Senha(self, Tamanho_Senha = __Tamanho_Senha):
         acesso = 0
         try:
             print("Digite a Senha:")

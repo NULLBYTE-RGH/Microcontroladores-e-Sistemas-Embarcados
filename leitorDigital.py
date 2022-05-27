@@ -36,7 +36,7 @@ class leitorDigital(object):
             self.__Frequencia = Frequencia
             self.__UARTPICO = UARTPICO
             self.__PontosAceitavel = PontosAceitavel
-            self.tranca = Tranca.Tranca(self.__GPIOTransistor)
+            self.tranca = Tranca.Tranca(__GPIOTransistor)
             
             self.uart = UART(__UARTPICO,9600*__Frequencia, tx=Pin(__PinoTX), rx=Pin(__PinoRX))
             self.Digital = pyfingerprint.PyFingerprint(self.uart)

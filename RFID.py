@@ -90,4 +90,3 @@ class RFID(object):
             return 0
         except:
             return -1
-

@@ -20,5 +20,5 @@ Microcontroladores-e-Sistemas-Embarcados
 - Placa de fenolite 10 x 20 Cm 
 - Transistor TIP-310
 - Reguladores [LM1117, L7805] 12 v -> 6 v e 6 v -> 3.3
-- Resistores [300 Ω, 1k Ω] 300 Ω controle base do Transistor e 2.2k Ω PULL-UP na entrada RX do leitor de Digital
+- Resistores [300 Ω, 2.2k Ω] 300 Ω controle base do Transistor e 2.2k Ω PULL-UP na entrada RX do leitor de Digital
 - 3 Capacitores 100 µF para remoção de ruído das entradas e saidas dos reguladores

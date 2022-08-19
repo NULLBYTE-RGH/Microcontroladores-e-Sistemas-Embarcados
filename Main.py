@@ -4,10 +4,10 @@ import Tranca
 import time
 import Teclado
 import RFID
+import Display
+import Giroscopio
 
-
-    
-def Iniciar():
+def IniciarDigital():
     try:
         leitor = leitorDigital.leitorDigital()
         return leitor
@@ -17,22 +17,30 @@ def Iniciar():
             return leitor
         except Exception as e:
             print(e)
+            
+def Interrupcao_Interecao_Teclado():           
+ T = True
+ 
+def Interrupcao_Interecao_Digital():           
+ D = True
+ 
+def Interrupcao_Interecao_RFID():           
+ R = True
 
+def IniciarSistema():
+    teclado = Teclado.Teclado()
+    rfid = RFID.RFID()
+    digital = IniciarDigital()
+    while True:
+        print("Escolha uma Opção: A, B, C")
+        opcao = teclado.LerTeclado(1)
+        if (opcao == "A"):
+            teclado.Validar_Senha()
+        elif(opcao == "B"):
+            rfid.Validar_Tag()
+        elif(opcao == "C"):
+            digital.ValidarDigital()
+        
+        
 
-
-#r = RFID.RFID()
-#r.Validar_Tag()
-#r.Cadastar_Tag(2)
-#id = r.Ler_Tag()
-#print(id)
-T = Teclado.Teclado()
-lidos = T.Criar_Senha(1,4)
-print(lidos)
-#digital = Iniciar()
-#digital.SalvarDigital()
-#digital.ValidarDigital()
-
-
-
-
-
+IniciarSistema()

@@ -22,3 +22,6 @@ Microcontroladores-e-Sistemas-Embarcados
 - Reguladores [LM1117, L7805] 12 v -> 6 v e 6 v -> 3.3
 - Resistores [300 Ω, 2.2k Ω] 300 Ω controle base do Transistor e 2.2k Ω PULL-UP na entrada RX do leitor de Digital
 - 3 Capacitores 100 µF para remoção de ruído das entradas e saidas dos reguladores
+
+
+![alt text](https://github.com/NULLBYTE-RGH/Arquitetura-de-Sistemas-Computacionais/blob/4007f79d6014e61bb6c4dc9cb15fa5d5aa9e7238/imgens/log.png)

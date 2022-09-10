@@ -24,4 +24,4 @@ Microcontroladores-e-Sistemas-Embarcados
 - 3 Capacitores 100 µF para remoção de ruído das entradas e saidas dos reguladores
 
 
-![alt text](https://github.com/NULLBYTE-RGH/Arquitetura-de-Sistemas-Computacionais/blob/4007f79d6014e61bb6c4dc9cb15fa5d5aa9e7238/imgens/log.png)
+![alt text](https://github.com/NULLBYTE-RGH/Microcontroladores-e-Sistemas-Embarcados/blob/e398d79846f129d06b47a3bfd9d4dfe6f40615bb/foto/Site%20Fechadura.png)

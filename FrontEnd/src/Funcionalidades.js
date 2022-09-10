@@ -123,12 +123,20 @@ class Funcionalidades extends React.Component {
                 Destrancar
               </button>
               {/*Botao de Conec*/}
+              {this.state.estado_conexao ? <button
+                className="btn btn-outline-danger"
+                onClick={this.conectar}
+              >
+                Desonectar
+              </button>
+              : 
               <button
                 className="btn btn-outline-success"
                 onClick={this.conectar}
               >
                 Conectar
-              </button>
+              </button>}
+              
             </div>
           </div>
           <div className="card-footer text-muted"></div>

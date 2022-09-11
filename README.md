@@ -27,8 +27,8 @@ Microcontroladores-e-Sistemas-Embarcados
 - React
 - Bootstrap
 - Fontawesome
-[ ] O Servidor de aplicação sera um Raspberry Pi 3, o qual ira se comunicar com a fechadura por meio de WIFI com um AP gerado pelo ESP-8266 que ficara junto com a fechadura.
-[ ] A comunicação se dara por meio de uma API REST.
+[x] O Servidor de aplicação sera um Raspberry Pi 3, o qual ira se comunicar com a fechadura por meio de WIFI com um AP gerado pelo ESP-8266 que ficara junto com a fechadura.
+[x] A comunicação se dara por meio de uma API REST.
 
 ### Trilhas
 

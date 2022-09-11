@@ -24,9 +24,11 @@ Microcontroladores-e-Sistemas-Embarcados
 - 3 Capacitores 100 µF para remoção de ruído das entradas e saidas dos reguladores
 
 ## FrontEnd
+
 - React
 - Bootstrap
 - Fontawesome
+
 - [x] O Servidor de aplicação sera um Raspberry Pi 3, o qual ira se comunicar com a fechadura por meio de WIFI com um AP gerado pelo ESP-8266 que ficara junto com a fechadura.
 - [x] A comunicação se dara por meio de uma API REST.
 

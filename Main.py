@@ -18,15 +18,6 @@ def IniciarDigital():
         except Exception as e:
             print(e)
             
-def Interrupcao_Interecao_Teclado():           
- T = True
- 
-def Interrupcao_Interecao_Digital():           
- D = True
- 
-def Interrupcao_Interecao_RFID():           
- R = True
-
 def IniciarSistema():
     teclado = Teclado.Teclado()
     rfid = RFID.RFID()

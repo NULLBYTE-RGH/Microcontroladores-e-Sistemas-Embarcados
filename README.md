@@ -23,10 +23,17 @@ Microcontroladores-e-Sistemas-Embarcados
 - Resistores [300 Ω, 2.2k Ω] 300 Ω controle base do Transistor e 2.2k Ω PULL-UP na entrada RX do leitor de Digital
 - 3 Capacitores 100 µF para remoção de ruído das entradas e saidas dos reguladores
 
-## Trilhas
+## FrontEnd
+- React
+- Bootstrap
+- Fontawesome
+[ ] O Servidor de aplicação sera um Raspberry Pi 3, o qual ira se comunicar com a fechadura por meio de WIFI com um AP gerado pelo ESP-8266 que ficara junto com a fechadura.
+[ ] A comunicação se dara por meio de uma API REST.
+
+### Trilhas
 
 ![alt text](https://github.com/NULLBYTE-RGH/Microcontroladores-e-Sistemas-Embarcados/blob/734ec019039ff5427eab8e21dd8d972c1e32a424/foto/Esquematico.png)
 
-## UI
+### UI
 
 ![alt text](https://github.com/NULLBYTE-RGH/Microcontroladores-e-Sistemas-Embarcados/blob/e398d79846f129d06b47a3bfd9d4dfe6f40615bb/foto/Site%20Fechadura.png)

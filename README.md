@@ -23,7 +23,7 @@ Microcontroladores-e-Sistemas-Embarcados
 - Resistores [300 Ω, 2.2k Ω] 300 Ω controle base do Transistor e 2.2k Ω PULL-UP na entrada RX do leitor de Digital
 - 3 Capacitores 100 µF para remoção de ruído das entradas e saidas dos reguladores
 
-## FrontEnd
+## FrontEnd:
 
 - React
 - Bootstrap

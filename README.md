@@ -25,7 +25,7 @@ Microcontroladores-e-Sistemas-Embarcados
 
 ## Trilhas
 
-![alt text](https://github.com/NULLBYTE-RGH/Microcontroladores-e-Sistemas-Embarcados/blob/9139ddddaa9bed3568d5efcf7234df743c0d9f10/Documenta%C3%A7%C3%A3o/Schematic_Esquematico%20completo_2022-05-27.pdf)
+![alt text](https://github.com/NULLBYTE-RGH/Microcontroladores-e-Sistemas-Embarcados/blob/734ec019039ff5427eab8e21dd8d972c1e32a424/foto/Esquematico.png)
 
 ## UI
 

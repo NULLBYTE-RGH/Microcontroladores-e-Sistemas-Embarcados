@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "@fortawesome/fontawesome-free/css/all.css";
 
+import sound from "./Orgonite.mp3"
+
 // import PUSH from "./Push";
 
 class Funcionalidades extends React.Component {
@@ -19,6 +21,7 @@ class Funcionalidades extends React.Component {
 
   Numeros_Metodos_Cadastrados = { senha: 3, TAG: 7, digital: 9 };
 
+  audio = new Audio(sound);
   //--------------------------------------------------------
 
   //metodos
@@ -123,20 +126,21 @@ class Funcionalidades extends React.Component {
                 Destrancar
               </button>
               {/*Botao de Conec*/}
-              {this.state.estado_conexao ? <button
-                className="btn btn-outline-danger"
-                onClick={this.conectar}
-              >
-                Desonectar
-              </button>
-              : 
-              <button
-                className="btn btn-outline-success"
-                onClick={this.conectar}
-              >
-                Conectar
-              </button>}
-              
+              {this.state.estado_conexao ? (
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={this.conectar}
+                >
+                  Desonectar
+                </button>
+              ) : (
+                <button
+                  className="btn btn-outline-success"
+                  onClick={this.conectar}
+                >
+                  Conectar
+                </button>
+              )}
             </div>
           </div>
           <div className="card-footer text-muted"></div>
@@ -217,6 +221,14 @@ class Funcionalidades extends React.Component {
           </div>
         </div>
         {/* Fim listar Tipos de acessos */}
+
+        <div style={{position: "absolute " , right:"0" , width: "200px" ,height: "10px"}}>
+          <button className="btn btn-outline-dark" onClick={()=>this.audio.play()}>
+            HabibHabib
+          </button>
+        </div>
+
+
       </div>
     );
   }

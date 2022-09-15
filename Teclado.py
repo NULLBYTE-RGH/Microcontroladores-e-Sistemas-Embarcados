@@ -2,14 +2,14 @@ from machine import Pin
 import time
 import Tranca
 ####################PARAMETROS###################
-__Pino1=2
-__Pino2=3
-__Pino3=4
-__Pino4=5
-__Pino5=6
-__Pino6=7
-__Pino7=8
-__Pino8=9
+__Pino1=16
+__Pino2=17
+__Pino3=18
+__Pino4=19
+__Pino5=20
+__Pino6=21
+__Pino7=3
+__Pino8=2
 __GPIOTransistor = 22
 __Tamanho_Senha = 4
 __teclas = [['1', '2', '3', 'A'], ['4', '5', '6', 'B'], ['7', '8', '9', 'C'], ['*', '0', '#', 'D']]
@@ -55,12 +55,13 @@ class Teclado(object):
                 for Coluna in range(4):
                     tecla = self.__Ler_Teclado(Linha,Coluna)
                     if  tecla == 1:
-                        #print("Tecla :", __teclas[Linha][Coluna])
+                        #print("Tecla :"+str(Linha)+str(Coluna))
                         tecla = __teclas[Linha][Coluna]
                         if tecla != '':
                             lidos = lidos + tecla
-                        time.sleep(0.3)
+                        time.sleep(0.2)
         return lidos
+                        
 
     def Criar_Senha(self, id, Tamanho_Senha = __Tamanho_Senha):
         
@@ -104,7 +105,7 @@ class Teclado(object):
                     print("Acesso Liberado "+ item[1])
                     acesso = 1
                     self.tranca.Destrancar()
-                    time.sleep(1)
+                    time.sleep(0.8)
                     self.tranca.Trancar()
                     return 1
                     break

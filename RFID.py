@@ -1,14 +1,15 @@
 import __RFID
 import utime
 import Tranca
+import time
 
 ####################PARAMETROS###################
-__Pino1=0
-__Pino2=2
-__Pino3=4
-__Pino4=3
-__Pino5=1
-__Pino6=0
+__Pino1=1 #SPI-ID--->SPI1
+__Pino2=10 #SCK
+__Pino3=8 #MISO
+__Pino4=11 #MOSI
+__Pino5=13 #SDA/CS
+__Pino6=12 #RST
 __GPIOTransistor = 22
 #################################################
 class RFID(object):
@@ -78,7 +79,7 @@ class RFID(object):
                     print("Acesso Liberado "+ item[1])
                     acesso = 1
                     self.tranca.Destrancar()
-                    time.sleep(1)
+                    time.sleep(0.8)
                     self.tranca.Trancar()
                     return 1
                     break
@@ -90,3 +91,4 @@ class RFID(object):
             return 0
         except:
             return -1
+

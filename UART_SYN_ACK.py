@@ -26,7 +26,7 @@ def Serial(Modo,Dados=''):
     '''
 Modo 1 ==> receber
 Modo 2 ==> enviar
-conteudo ==> necessario se utilizado com Modo 2, tipo : STR
+Dados ==> necessario se utilizado com Modo 2, tipo : STR
     '''
     
     tentativas = 0

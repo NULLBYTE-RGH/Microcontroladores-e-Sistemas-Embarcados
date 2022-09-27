@@ -1,3 +1,7 @@
+'''
+UART_SYN_ACK
+Autor #NULLBYTE-RGH#
+'''
 from machine import UART
 from machine import Pin
 import network

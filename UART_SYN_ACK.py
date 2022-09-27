@@ -18,8 +18,6 @@ __TimeOut = 10
 __SYN=__SYN.to_bytes(1, 'big')
 __ACK=__ACK.to_bytes(1, 'big')
 
-# parse x:
-#y = json.loads(a.decode('utf-8'))
 
 uart = UART(2, baudrate=115200, rx = 16, tx = 17, timeout=10)
 
@@ -38,7 +36,6 @@ conteudo ==> necessario se utilizado com Modo 2, tipo : STR
         print("Aguardando Sincronizacao...")
         while tentativas < __TimeOut:
             __BUS__= uart.read(1)
-            #print("Aguardando Sincronizacao...")
             time.sleep(__Delay)
             tentativas+=1
             if(__BUS__ ==__SYN):
@@ -56,7 +53,6 @@ conteudo ==> necessario se utilizado com Modo 2, tipo : STR
         print("Aguardando tamanho do Buffer...")
         while tentativas < __TimeOut :
             __BUS__= uart.read(2)
-            #print("Aguardando tamanho do Buffer...")
             time.sleep(__Delay)
             tentativas+=1
             if(__BUS__ != None):
@@ -75,7 +71,6 @@ conteudo ==> necessario se utilizado com Modo 2, tipo : STR
         print("Aguardando dados...")
         while tentativas < __TimeOut:
             __BUS__= uart.read(tamanho)
-            #print("Aguardando dados...")
             time.sleep(__Delay)
             tentativas+=1
             if(__BUS__ != None):
@@ -100,7 +95,6 @@ conteudo ==> necessario se utilizado com Modo 2, tipo : STR
         print("Aguardando Confirmacao...")
         while tentativas < __TimeOut :
             __BUS__= uart.read(1)
-            #print("Aguardando Confirmacao...")
             time.sleep(__Delay)
             tentativas+=1
             if(__BUS__ ==__ACK):
@@ -119,7 +113,6 @@ conteudo ==> necessario se utilizado com Modo 2, tipo : STR
         print("Aguardando Confirmacao...")
         while tentativas < __TimeOut:
             __BUS__= uart.read(1)
-            #print("Aguardando Confirmacao...")
             time.sleep(__Delay)
             tentativas+=1
             if(__BUS__ ==__ACK):
@@ -135,7 +128,6 @@ conteudo ==> necessario se utilizado com Modo 2, tipo : STR
         print("Aguardando Confirmacao...")
         while tentativas < __TimeOut:
             __BUS__= uart.read(1)
-            #print("Aguardando Confirmacao...")
             time.sleep(__Delay)
             tentativas+=1
             if(__BUS__ ==__ACK):

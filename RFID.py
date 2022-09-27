@@ -1,3 +1,7 @@
+'''
+RFID
+Autor #NULLBYTE-RGH#
+'''
 import __RFID
 import utime
 import Tranca

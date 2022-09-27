@@ -1,3 +1,8 @@
+'''
+leitorDigital
+Autor #NULLBYTE-RGH#
+'''
+
 import pyfingerprint, time
 from machine import UART, Pin
 import Tranca

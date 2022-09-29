@@ -80,6 +80,38 @@ class UART_SYN(object):
             __BUS__= self.uart.read(tamanho)
             print("Aguardando dados...")
             while tentativas < self.__TimeOut_SYN_ACK:
+                #====================================================================================              
+                
+                if tamanho>20:
+                    frag = math.ceil(tamanho/20)
+                    print("Fragmentando recepcao em",str(frag)+" envios")
+                    i=0
+                    __BUS__= []
+                    while i < frag+1:
+                        
+                        self.uart.write(self.__SYN)
+                        print("SYN enviado...")
+                        time.sleep(self.__Delay)
+                        
+                        while tentativas < self.__TimeOut_SYN_ACK:
+                            resposta = self.uart.read(frag)
+                            time.sleep(self.__Delay)
+                            tentativas+=1
+                            if(resposta != None):
+                                __BUS__.append((resposta).decode(self.__Codificacao))
+                                print("Recebido:", str(__BUS__)+"Fragmento"+str(i+1))
+                                tentativas = 0
+                                i+=1
+                                break
+                        if(tentativas != 0):
+                            raise Exception("ERRO Dados!! recebido:",__BUS__)
+                        
+                    time.sleep(self.__Delay)    
+                    self.uart.write(self.__ACK)
+                    return(__BUS__)    
+                    
+                        
+ #====================================================================================      
                 __BUS__= self.uart.read(tamanho)
                 time.sleep(self.__Delay)
                 tentativas+=1
@@ -131,21 +163,66 @@ class UART_SYN(object):
                     break
             if(tentativas != 0):
                 raise Exception("ERRO ACK 2!! recebido:",__BUS__)
-
-            self.uart.write(Dados)
-
-            __BUS__= self.uart.read(1)
-            print("Aguardando Confirmacao...")
-            while tentativas < self.__TimeOut_SYN_ACK:
-                __BUS__= self.uart.read(1)
-                time.sleep(self.__Delay)
-                tentativas+=1
-                if(__BUS__ ==self.__ACK):
-                    print("ACK Recebido!\nFinalizando Comunicacao com Sucesso!...")
-                    tentativas = 0
-                    break
-            if(tentativas != 0):
-                raise Exception("ERRO ACK 3!! recebido:",__BUS__)
+                
+            #====================================================================================            
             
-            return(0)
+            
+            if buffer>20:
+                frag = math.ceil(buffer/20)
+                print("Fragmentando envio em",str(frag)+" envios")
+                i=0
+                while i < frag+1:
+                    while tentativas < self.__TimeOut_SYN_ACK:
+                        __BUS__= self.uart.read(1)
+                        time.sleep(self.__Delay)
+                        tentativas+=1
+                        if(__BUS__ ==self.__SYN):
+                            print("SYN Recebido!")
+                            tentativas = 0
+                            break
+                    if(tentativas != 0):
+                        raise Exception("ERRO SYN!! recebido:",__BUS__)
+                    
+                    Envio = Dados[:20]
+                    Dados = Dados[19:]
+                    print("====================================")
+                    print("Resta para o envio "+str(i+1))
+                    print(Dados)
+                    print("====================================")
+                    print("Enviando "+str(Envio))
+                    self.uart.write(Envio)
+                    i+=1
+                    
+                print("Aguardando Confirmacao...")
+                while tentativas < self.__TimeOut_SYN_ACK:
+                    __BUS__= self.uart.read(1)
+                    time.sleep(self.__Delay)
+                    tentativas+=1
+                    if(__BUS__ ==self.__ACK):
+                        print("ACK Recebido!\nFinalizando Comunicacao com Sucesso!...")
+                        tentativas = 0
+                        break
+                if(tentativas != 0):
+                    raise Exception("ERRO ACK 3!! recebido:",__BUS__)
+                
+                
+   #====================================================================================
+
+            else:
+                self.uart.write(Dados)
+                
+                    #__BUS__= self.uart.read(1)
+                print("Aguardando Confirmacao...")
+                while tentativas < self.__TimeOut_SYN_ACK:
+                    __BUS__= self.uart.read(1)
+                    time.sleep(self.__Delay)
+                    tentativas+=1
+                    if(__BUS__ ==self.__ACK):
+                        print("ACK Recebido!\nFinalizando Comunicacao com Sucesso!...")
+                        tentativas = 0
+                        break
+                if(tentativas != 0):
+                    raise Exception("ERRO ACK 389!! recebido:",__BUS__)
+                
+                return(0)
 

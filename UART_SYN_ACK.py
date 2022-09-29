@@ -6,18 +6,19 @@ Autor NULLBYTE-RGH
 from machine import UART
 from machine import Pin
 import time
-
+import math
 ####################PARAMETROS###################
 __SYN=1 #b'\x01'
 __ACK=2 #b'\x02'
 __Codificacao = 'utf-8'
-__Delay = 0.5
+__Delay = 0.1
 __TimeOut_SYN_ACK = 20
-__Frequencia = 115200
+__Frequencia = 256000  #110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000 bits per second
 __UART = 0
 __RX_PIN = 1
 __TX_PIN = 0
 __Timeout = 10
+__Tamanho_Maximo_Quadro = 20 #em Bytes
 __ESP32 = False
 #################################################
 
@@ -82,15 +83,15 @@ class UART_SYN(object):
             while tentativas < self.__TimeOut_SYN_ACK:
                 #====================================================================================              
                 
-                if tamanho>20:
-                    frag = math.ceil(tamanho/20)
+                if tamanho>self.__Tamanho_Maximo_Quadro:
+                    frag = math.ceil(tamanho/self.__Tamanho_Maximo_Quadro)
                     print("Fragmentando recepcao em",str(frag)+" envios")
                     i=0
                     __BUS__= ''
                     while i < frag+1:
                         
                         self.uart.write(self.__SYN)
-                        print("SYN enviado...")
+                        #print("SYN enviado...")
                         time.sleep(self.__Delay)
                         
                         while tentativas < self.__TimeOut_SYN_ACK:
@@ -99,7 +100,7 @@ class UART_SYN(object):
                             tentativas+=1
                             if(resposta != None):
                                 __BUS__= __BUS__+ ((resposta).decode(self.__Codificacao))
-                                print("Recebido:", str(__BUS__)+"Fragmento"+str(i+1))
+                                #print("Recebido:", str(__BUS__)+"Fragmento"+str(i+1))
                                 tentativas = 0
                                 i+=1
                                 break
@@ -108,7 +109,7 @@ class UART_SYN(object):
                         
                     time.sleep(self.__Delay)    
                     self.uart.write(self.__ACK)
-                    return(__BUS__)      
+                    return(__BUS__.replace("''","'"))
                     
                         
  #====================================================================================      
@@ -167,8 +168,8 @@ class UART_SYN(object):
             #====================================================================================            
             
             
-            if buffer>20:
-                frag = math.ceil(buffer/20)
+            if buffer>self.__Tamanho_Maximo_Quadro:
+                frag = math.ceil(buffer/self.__Tamanho_Maximo_Quadro)
                 print("Fragmentando envio em",str(frag)+" envios")
                 i=0
                 while i < frag+1:
@@ -177,7 +178,7 @@ class UART_SYN(object):
                         time.sleep(self.__Delay)
                         tentativas+=1
                         if(__BUS__ ==self.__SYN):
-                            print("SYN Recebido!")
+                            #print("SYN Recebido!")
                             tentativas = 0
                             break
                     if(tentativas != 0):
@@ -185,15 +186,15 @@ class UART_SYN(object):
                     
                     Envio = Dados[:20]
                     Dados = Dados[19:]
-                    print("====================================")
-                    print("Resta para o envio "+str(i+1))
-                    print(Dados)
-                    print("====================================")
-                    print("Enviando "+str(Envio))
+                    #print("====================================")
+                    #print("Resta para o envio "+str(i+1))
+                    #print(Dados)
+                    #print("====================================")
+                    #print("Enviando "+str(Envio))
                     self.uart.write(Envio)
                     i+=1
                     
-                print("Aguardando Confirmacao...")
+                #print("Aguardando Confirmacao...")
                 while tentativas < self.__TimeOut_SYN_ACK:
                     __BUS__= self.uart.read(1)
                     time.sleep(self.__Delay)

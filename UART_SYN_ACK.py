@@ -86,7 +86,7 @@ class UART_SYN(object):
                     frag = math.ceil(tamanho/20)
                     print("Fragmentando recepcao em",str(frag)+" envios")
                     i=0
-                    __BUS__= []
+                    __BUS__= ''
                     while i < frag+1:
                         
                         self.uart.write(self.__SYN)
@@ -98,7 +98,7 @@ class UART_SYN(object):
                             time.sleep(self.__Delay)
                             tentativas+=1
                             if(resposta != None):
-                                __BUS__.append((resposta).decode(self.__Codificacao))
+                                __BUS__= __BUS__+ ((resposta).decode(self.__Codificacao))
                                 print("Recebido:", str(__BUS__)+"Fragmento"+str(i+1))
                                 tentativas = 0
                                 i+=1
@@ -108,7 +108,7 @@ class UART_SYN(object):
                         
                     time.sleep(self.__Delay)    
                     self.uart.write(self.__ACK)
-                    return(__BUS__)    
+                    return(__BUS__)      
                     
                         
  #====================================================================================      

@@ -184,8 +184,8 @@ class UART_SYN(object):
                     if(tentativas != 0):
                         raise Exception("ERRO SYN!! recebido:",__BUS__)
                     
-                    Envio = Dados[:20]
-                    Dados = Dados[19:]
+                    Envio = Dados[:self.__Tamanho_Maximo_Quadro]
+                    Dados = Dados[self.__Tamanho_Maximo_Quadro-1:]
                     #print("====================================")
                     #print("Resta para o envio "+str(i+1))
                     #print(Dados)

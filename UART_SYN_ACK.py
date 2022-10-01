@@ -13,13 +13,13 @@ __ACK=2 #b'\x02'
 __Codificacao = 'utf-8'
 __Delay = 0.1
 __TimeOut_SYN_ACK = 20
-__Frequencia = 256000  #110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 and 256000 bits per second
+__Frequencia = 256000  #110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000 e 256000 bits por segundo
 __UART = 0
 __RX_PIN = 1
 __TX_PIN = 0
-__Timeout = 10
+__Timeout = 10 #TimeOut UART
 __Tamanho_Maximo_Quadro = 20 #em Bytes
-__ESP32 = False
+__ESP32 = False #Caso esteja executando em um ESP8266 ou ESP32 -> True
 #################################################
 
 class UART_SYN(object):

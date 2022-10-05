@@ -4,8 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "@fortawesome/fontawesome-free/css/all.css";
 
-import sound from "./Orgonite.mp3"
-
+import sound from "./Orgonite.mp3";
+import axios from 'axios';
 // import PUSH from "./Push";
 
 class Funcionalidades extends React.Component {
@@ -19,15 +19,66 @@ class Funcionalidades extends React.Component {
 
   lista_Acessos = ["Jose", "Pedro", "Paulo"];
 
-  Numeros_Metodos_Cadastrados = { senha: 3, TAG: 7, digital: 9 };
-
   audio = new Audio(sound);
+
+  IP_AP='192.168.4.1'
+  //Json é o requisitado 
+  Json = ["{'senha': '1111', 'rfid': '1485898912', 'digital': '0', 'id': '1', 'nome': 'joao'}, {'senha': '2222', 'rfid': '20442135750', 'digital': '0', 'id': '2', 'nome': 'matheus'},  {'senha': '123', 'rrfid': '0', 'digitall': '2', 'id': '3',  'nome': 'marcel'},  {'senha': '123', 'rrfid': '0', 'digitall': '3', 'id': '4',  'nome': 'C'}, {'sennha': '123', 'rfid':: '0', 'digital': '44', 'id': '5', 'nomee': 'D'}, {'senha':  '123', 'rfid': '0',, 'digital': '5', 'iid': '6', 'nome': 'EE'}, {'senha': '123', 'rfid': '0', 'diggital': '6', 'id': '7', 'nome': 'F'}, {{'senha': '123', 'rffid': '0', 'digital': '7', 'id': '8', 'nome': 'G'}"]
+  //json2 é o final após todo o tratamento de erros e formatação
+  Json2 = []
   //--------------------------------------------------------
 
   //metodos
   conectar = () => {
-    this.setState({ estado_conexao: this.state.estado_conexao ? 0 : 1 });
-    const ultimo_acesso = this.Tratar_Lista_Acessos(this.lista_Acessos);
+    // axios.get(`http://${this.IP_AP}`)
+    // .then(res => {
+    //   const resposta = res.data;
+    //   this.setState({ Lista : resposta });
+    //   this.Json.map(Lista=>console.log(Lista))
+    //   //this.state.Lista.map(Lista => console.log(Lista))
+    // })
+    this.Json = this.Json[0].split("},")
+    this.Json.map(item=>{this.Json2.push((item.includes("}")?item:item.concat("}")))})
+    this.Json = []
+    this.Json2.map(item=>{this.Json.push((item.replaceAll("'",'"')))})
+    this.Json2 = []
+    this.Json.map(item=>{
+      item = item.replaceAll(",,",',')
+      item = item.replaceAll("::",':')
+      item = item.replaceAll("{{",'{')
+      this.Json2.push(JSON.parse(item))
+    })
+
+    this.setState({ Json3 : this.Json2 });
+
+  //Separação das autenticações Cadastradas
+
+    let Contador0 = 0;
+    let Contador1 = 0;
+    let Contador2 = 0;
+
+  this.Json2.map(i=>{
+    if (i.senha !== undefined){
+    Contador0++
+    }
+    if (i.rfid !== undefined){
+      Contador1++
+      }
+    if (i.digital !== undefined){
+      Contador2++
+      }
+    })
+
+  this.setState({Senhas : Contador0, RFIDs : Contador1, Digitais : Contador2})
+
+  //FIM Separação das autenticações Cadastradas
+
+  //Separação Ultimo Acesso
+
+  const ultimo_acesso = this.Tratar_Lista_Acessos(this.lista_Acessos);
+
+  //FIM Separação Ultimo Acesso
+
     this.setState({ ultimo_acesso: ultimo_acesso });
     if (this.state.estado_conexao) {
       window.confirm("Tem certeza que deseja se desconectar?")
@@ -44,6 +95,7 @@ class Funcionalidades extends React.Component {
     setTimeout(() => {
       this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
     }, 3000);
+    console.log(this.state.Json3)
   };
 
   Tratar_Lista_Acessos = (lista) => {
@@ -59,10 +111,17 @@ class Funcionalidades extends React.Component {
       ultimo_acesso: null,
       estado_conexao: null,
       Numeros_Metodos_Cadastrados: {},
+      Json3:[],
+      Senhas: 0,
+      Digitais: 0,
+      RFIDs:0 ,
     };
   }
   //--------------------------------------------------------
-
+  componentDidMount() {
+    
+  }
+  //--------------------------------------------------------
   render() {
     return (
       <div className="fs-4 fw-bold text-white mt-5 ">
@@ -167,10 +226,10 @@ class Funcionalidades extends React.Component {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  {this.lista_Acessos.map((el) => (
-                    <ul className="dropdown-item" key={el}>
+                  {this.state.Json3.map((el) => (
+                    <ul className="dropdown-item" key={Math.random()}>
                       {" "}
-                      {el}{" "}
+                      {el.nome}{" "}
                     </ul>
                   ))}
                 </li>
@@ -196,7 +255,7 @@ class Funcionalidades extends React.Component {
                     <div className="fw-bold">Senhas</div>
                   </div>
                   <span className="badge bg-primary rounded-pill">
-                    {this.state.Numeros_Metodos_Cadastrados.senha}
+                    {this.state.Senhas}
                   </span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
@@ -204,7 +263,7 @@ class Funcionalidades extends React.Component {
                     <div className="fw-bold">TAGS</div>
                   </div>
                   <span className="badge bg-primary rounded-pill">
-                    {this.state.Numeros_Metodos_Cadastrados.TAG}
+                    {this.state.RFIDs}
                   </span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
@@ -212,7 +271,7 @@ class Funcionalidades extends React.Component {
                     <div className="fw-bold">Digitais</div>
                   </div>
                   <span className="badge bg-primary rounded-pill">
-                    {this.state.Numeros_Metodos_Cadastrados.digital}
+                    {this.state.Digitais}
                   </span>
                 </li>
               </ol>
@@ -222,13 +281,21 @@ class Funcionalidades extends React.Component {
         </div>
         {/* Fim listar Tipos de acessos */}
 
-        <div style={{position: "absolute " , right:"0" , width: "200px" ,height: "10px"}}>
-          <button className="btn btn-outline-dark" onClick={()=>this.audio.play()}>
+        <div
+          style={{
+            position: "absolute ",
+            right: "0",
+            width: "200px",
+            height: "10px",
+          }}
+        >
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => this.audio.play()}
+          >
             HabibHabib
           </button>
         </div>
-
-
       </div>
     );
   }

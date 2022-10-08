@@ -36,15 +36,16 @@ class Funcionalidades extends React.Component {
     this.setState({ estado_conexao: true })
 
     this.Json = this.Json[0].split("},")
-    this.Json.map(item=>{this.Json2.push((item.includes("}")?item:item.concat("}")))})
+    this.Json.map(item=>{this.Json2.push((item.includes("}")?item:item.concat("}")));return 0 })
     this.Json = []
-    this.Json2.map(item=>{this.Json.push((item.replaceAll("'",'"')))})
+    this.Json2.map(item=>{this.Json.push((item.replaceAll("'",'"')));return 0 })
     this.Json2 = []
     this.Json.map(item=>{
       item = item.replaceAll(",,",',')
       item = item.replaceAll("::",':')
       item = item.replaceAll("{{",'{')
       this.Json2.push(JSON.parse(item))
+      return 0 
     })
 
   //Separação das autenticações Cadastradas
@@ -63,6 +64,7 @@ class Funcionalidades extends React.Component {
     if (i.digital !== undefined){
       Contador2++
       }
+    return 0 
     })
 
   //Separação Ultimo Acesso

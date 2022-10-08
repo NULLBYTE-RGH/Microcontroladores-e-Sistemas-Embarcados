@@ -1,12 +1,10 @@
 import React from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 import sound from "./Orgonite.mp3";
 import axios from 'axios';
-// import PUSH from "./Push";
 
 class Funcionalidades extends React.Component {
   //variaveis
@@ -16,14 +14,11 @@ class Funcionalidades extends React.Component {
     wifi_On: "fa-solid  fa-wifi fa-2x",
     wifi_off: "fa-solid fa-globe fa-2x",
   };
-
-  lista_Acessos = ["Jose", "Pedro", "Paulo"];
-
   audio = new Audio(sound);
-
+  //IP ESP32
   IP_AP='192.168.4.1'
   //Json é o requisitado 
-  Json = ["{'senha': '1111', 'rfid': '1485898912', 'digital': '0', 'id': '1', 'nome': 'joao'}, {'senha': '2222', 'rfid': '20442135750', 'digital': '0', 'id': '2', 'nome': 'matheus'},  {'senha': '123', 'rrfid': '0', 'digitall': '2', 'id': '3',  'nome': 'marcel'},  {'senha': '123', 'rrfid': '0', 'digitall': '3', 'id': '4',  'nome': 'C'}, {'sennha': '123', 'rfid':: '0', 'digital': '44', 'id': '5', 'nomee': 'D'}, {'senha':  '123', 'rfid': '0',, 'digital': '5', 'iid': '6', 'nome': 'EE'}, {'senha': '123', 'rfid': '0', 'diggital': '6', 'id': '7', 'nome': 'F'}, {{'senha': '123', 'rffid': '0', 'digital': '7', 'id': '8', 'nome': 'G'}"]
+  Json = ["{'senha': '1111', 'rfid': '1485898912', 'digital': '0', 'id': '1', 'nome': 'joao'}, {'senha': '2222', 'rfid': '20442135750', 'digital': '0', 'id': '2', 'nome': 'matheus'},  {'senha': '123', 'rrfid': '0', 'digitall': '2', 'id': '3',  'nome': 'marcel'},  {'senha': '123', 'rrfid': '0', 'digitall': '3', 'id': '4',  'nome': 'C'}, {'sennha': '123', 'rfid':: '0', 'digital': '44', 'id': '5', 'nomee': 'D'}, {'senha':  '123', 'rfid': '0',, 'digital': '5', 'iid': '6', 'nome': 'EE'}, {'senha': '123', 'rfid': '0', 'diggital': '6', 'id': '7', 'nome': 'F'}, {{'senha': '123', 'rffid': '0', 'digital': '7', 'id': '8', 'nome': 'G'}, {'ultimo': 'Joao'}"]
   //json2 é o final após todo o tratamento de erros e formatação
   Json2 = []
   //--------------------------------------------------------
@@ -37,6 +32,9 @@ class Funcionalidades extends React.Component {
     //   this.Json.map(Lista=>console.log(Lista))
     //   //this.state.Lista.map(Lista => console.log(Lista))
     // })
+    if (!this.state.estado_conexao) {
+    this.setState({ estado_conexao: true })
+
     this.Json = this.Json[0].split("},")
     this.Json.map(item=>{this.Json2.push((item.includes("}")?item:item.concat("}")))})
     this.Json = []
@@ -48,8 +46,6 @@ class Funcionalidades extends React.Component {
       item = item.replaceAll("{{",'{')
       this.Json2.push(JSON.parse(item))
     })
-
-    this.setState({ Json3 : this.Json2 });
 
   //Separação das autenticações Cadastradas
 
@@ -69,26 +65,24 @@ class Funcionalidades extends React.Component {
       }
     })
 
-  this.setState({Senhas : Contador0, RFIDs : Contador1, Digitais : Contador2})
-
-  //FIM Separação das autenticações Cadastradas
-
   //Separação Ultimo Acesso
 
-  const ultimo_acesso = this.Tratar_Lista_Acessos(this.lista_Acessos);
+  const ultimo_acesso = this.Json2[(this.Json2.length - 1)].ultimo;
 
   //FIM Separação Ultimo Acesso
 
-    this.setState({ ultimo_acesso: ultimo_acesso });
-    if (this.state.estado_conexao) {
-      window.confirm("Tem certeza que deseja se desconectar?")
-        ? this.setState({ estado_conexao: 0 })
-        : this.setState({ estado_conexao: 1 });
-    }
-    this.setState({
-      Numeros_Metodos_Cadastrados: this.Numeros_Metodos_Cadastrados,
-    });
+  this.setState({Senhas : Contador0, RFIDs : Contador1, Digitais : Contador2, Json3 : this.Json2, ultimo_acesso : ultimo_acesso})
+
+  //FIM Separação das autenticações Cadastradas
+
+  }
+  if (this.state.estado_conexao) {
+    window.confirm("Tem certeza que deseja se desconectar?")
+      ? this.setState({ estado_conexao: false })
+      : this.setState({ estado_conexao: true });
+  }
   };
+
 
   destrancar = () => {
     this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
@@ -109,7 +103,7 @@ class Funcionalidades extends React.Component {
     this.state = {
       estado_tranca: 1,
       ultimo_acesso: null,
-      estado_conexao: null,
+      estado_conexao: false,
       Numeros_Metodos_Cadastrados: {},
       Json3:[],
       Senhas: 0,

@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "c2531999-36fb-4c2d-b84c-49f41dbd2956",
+		"name": "T2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20757843"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"senha\": \"1111\", \"rfid\": \"1485898912\", \"digital\": \"0\", \"id\": \"1\", \"nome\": \"cuzom\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/ADD",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"ADD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/GET",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"GET"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Destrancar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"senha\": \"123\", \"nome\": \"marcel\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/DEST",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"DEST"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Trancar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/TRANC",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"TRANC"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

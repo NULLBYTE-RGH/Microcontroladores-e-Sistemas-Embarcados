@@ -30,3 +30,13 @@ app.post('/adicionar', (req, res) => {
     Usuarios = [Usuarios[0].concat(`, ${JSON.stringify(req.body.data)}`)]
     res.sendStatus(200)
 })
+
+app.post('/ultimo', (req, res) => {
+    console.log(req.body.data)
+    console.log(req.body.data.data)
+    Acesso = ''
+    if(req.body.data.data===undefined){Acesso = ''}else{Acesso =  req.body.data.data}
+    Ultimo_Acesso = `, {'ultimo': '${Acesso}'}`
+    console.log(Ultimo_Acesso)
+    res.sendStatus(200)
+})

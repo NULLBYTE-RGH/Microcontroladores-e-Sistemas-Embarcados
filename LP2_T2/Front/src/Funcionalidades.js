@@ -32,11 +32,11 @@ class Funcionalidades extends React.Component {
 
   //metodos
 
-  conexao(){
+  conexao() {
     this.Json2 = [];
     this.Json = [];
-    
-    this.setState({Json3: []})
+
+    this.setState({ Json3: [] });
     axios.get(this.servico).then((res) => {
       this.Json = res.data;
       console.log(this.Json);
@@ -100,12 +100,14 @@ class Funcionalidades extends React.Component {
 
       //FIM Separação das autenticações Cadastradas
     });
-
   }
 
-  login(event){
-    event.preventDefault()
-    this.setState({usuario:event.target.elements.nome.value, senha:event.target.elements.senha.value})
+  login(event) {
+    event.preventDefault();
+    this.setState({
+      usuario: event.target.elements.nome.value,
+      senha: event.target.elements.senha.value,
+    });
   }
 
   conectar = () => {
@@ -114,42 +116,48 @@ class Funcionalidades extends React.Component {
     if (!this.state.estado_conexao) {
       //TIMER://
       this.timer = setInterval(() => {
-        console.log('This will be called every 2 seconds');
-        this.conexao()
+        console.log("This will be called every 2 seconds");
+        this.conexao();
       }, 1000);
-    //FIM TIMER://
-    this.conexao()
+      //FIM TIMER://
+      this.conexao();
     }
     if (this.state.estado_conexao) {
-      if(window.confirm("Tem certeza que deseja se desconectar?")){
-        this.setState({ estado_conexao: false })
-        clearInterval(this.timer)
+      if (window.confirm("Tem certeza que deseja se desconectar?")) {
+        this.setState({ estado_conexao: false });
+        clearInterval(this.timer);
+      } else {
+        this.setState({ estado_conexao: true });
       }
-        else{this.setState({ estado_conexao: true });}
     }
   };
 
   destrancar = () => {
-
     if (this.state.estado_conexao) {
-    let json = `{"nome":"${(this.state.usuario).toString()}", "senha":"${(this.state.senha).toString()}"}`
-    json = JSON.parse(json)
-    console.log(json)
-    axios.post(this.Destrancar,json).then((res) => {
-      this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
-
-      setTimeout(() => {
-        axios.get(this.Trancar).then((res) => {
+      let json = `{"nome":"${this.state.usuario.toString()}", "senha":"${this.state.senha.toString()}"}`;
+      json = JSON.parse(json);
+      console.log(json);
+      axios
+        .post(this.Destrancar, json)
+        .then((res) => {
           this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
-          
-        });
-      }, 3000);
 
-    }).catch((erro)=>{
-        if(erro.response){window.alert("Credenciais Incorretas!")}
-    });
+          setTimeout(() => {
+            axios.get(this.Trancar).then((res) => {
+              this.setState({
+                estado_tranca: this.state.estado_tranca ? 0 : 1,
+              });
+            });
+          }, 3000);
+        })
+        .catch((erro) => {
+          if (erro.response) {
+            window.alert("Credenciais Incorretas!");
+          }
+        });
+    } else {
+      window.alert("É necessario se Conectar primeiro");
     }
-    else{window.alert("É necessario se Conectar primeiro")}
   };
 
   Tratar_Lista_Acessos = (lista) => {
@@ -169,8 +177,8 @@ class Funcionalidades extends React.Component {
       Senhas: 0,
       Digitais: 0,
       RFIDs: 0,
-      usuario:'',
-      senha:'',
+      usuario: "",
+      senha: "",
     };
     this.login = this.login.bind(this);
   }
@@ -180,14 +188,12 @@ class Funcionalidades extends React.Component {
   render() {
     return (
       <div className="fs-4 fw-bold text-white mt-5 ">
-
         {/*Bloco 1*/}
         <div className="card">
           <h5 className="card-header bg-info">
             <br></br>
           </h5>
           <div className="card-body bg-dark">
-            
             <div className="d-flex justify-content-between">
               {/*componente estado*/}
               <div className="me-5">
@@ -248,7 +254,7 @@ class Funcionalidades extends React.Component {
                   className="btn btn-outline-danger"
                   onClick={this.conectar}
                 >
-                  Desonectar
+                  Desconectar
                 </button>
               ) : (
                 <button
@@ -257,9 +263,7 @@ class Funcionalidades extends React.Component {
                 >
                   Conectar
                 </button>
-
               )}
-
             </div>
           </div>
           <div className="card-footer text-muted"></div>
@@ -268,42 +272,42 @@ class Funcionalidades extends React.Component {
 
         {/*Lista de ultimo acesso*/}
         <div className="d-flex justify-content-between">
-
-        <div className="col-4" >
-          <div className={`mt-5 p-2 border border-5`}>
-
-        {/* form de login */}
-        <form className="Auth-form" onSubmit={this.login}>
-        <div className="Auth-form-content">
-          <div className="form-group mt-3">
-            <label>Nome</label>
-            <input
-              type="nome"
-              name="nome"
-              className="form-control mt-1"
-              placeholder="Digite o Nome"
-            />
+          <div className="col-4">
+            <div className={`mt-5 p-2 border border-5`}>
+              {/* form de login */}
+              <form className="Auth-form" onSubmit={this.login}>
+                <h3 className="Auth-form-title text-center">Autenticação</h3>
+                <div className="Auth-form-content">
+                  <div className="form-group mt-3">
+                    <label>Nome</label>
+                    <input
+                      type="nome"
+                      name="nome"
+                      className="form-control mt-1"
+                      placeholder="Digite o Nome"
+                      onChange={(event) => {
+                        this.setState({ usuario: event.target.value });
+                      }}
+                    />
+                  </div>
+                  <div className="form-group mt-3">
+                    <label>Senha</label>
+                    <input
+                      type="senha"
+                      name="senha"
+                      className="form-control mt-1"
+                      placeholder="Digite a senha"
+                      onChange={(event) => {
+                        this.setState({ senha: event.target.value });
+                      }}
+                    />
+                  </div>
+                  <div className="d-grid gap-2 mt-3"></div>
+                </div>
+              </form>
+              {/* fim do from de login */}
+            </div>
           </div>
-          <div className="form-group mt-3">
-            <label>Senha</label>
-            <input
-              type="senha"
-              name="senha"
-              className="form-control mt-1"
-              placeholder="Digite a senha"
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
-              Confirmar
-            </button>
-          </div>
-        </div>
-      </form>
-      {/* fim do from de login */}
-      
-          </div>
-        </div>
 
           <div className={`mt-5 p-2 border border-5`}>
             Ultimo Acesso:{" "}

@@ -8,6 +8,9 @@ const axios = require("axios");
 
 class Funcionalidades extends React.Component {
   //variaveis
+
+  timer = null;
+
   icones = {
     Trancado: "fa-sharp fa-solid fa-lock fa-2x",
     Destrancado: "fa-solid fa-unlock fa-2x",
@@ -27,12 +30,78 @@ class Funcionalidades extends React.Component {
   Json = [];
   //--------------------------------------------------------
 
-  //express-------------------------------------------------
-
-  ouvir = () => {};
-  //express------------FIM------------------------------------
-
   //metodos
+
+  conexao(){
+    this.Json2 = [];
+    this.Json = [];
+    
+    this.setState({Json3: []})
+    axios.get(this.servico).then((res) => {
+      this.Json = res.data;
+      console.log(this.Json);
+      if (this.Json.lengh < 1) {
+        this.setState({ estado_conexao: false });
+      } else {
+        this.setState({ estado_conexao: true });
+      }
+
+      this.Json = this.Json[0].split("},");
+      this.Json.map((item) => {
+        this.Json2.push(item.includes("}") ? item : item.concat("}"));
+        return 0;
+      });
+      this.Json = [];
+      this.Json2.map((item) => {
+        this.Json.push(item.replaceAll("'", '"'));
+        return 0;
+      });
+      this.Json2 = [];
+      this.Json.map((item) => {
+        item = item.replaceAll(",,", ",");
+        item = item.replaceAll("::", ":");
+        item = item.replaceAll("{{", "{");
+        this.Json2.push(JSON.parse(item));
+        return 0;
+      });
+
+      //Separação das autenticações Cadastradas
+
+      let Contador0 = 0;
+      let Contador1 = 0;
+      let Contador2 = 0;
+
+      this.Json2.map((i) => {
+        if (i.senha !== undefined) {
+          Contador0++;
+        }
+        if (i.rfid !== undefined) {
+          Contador1++;
+        }
+        if (i.digital !== undefined) {
+          Contador2++;
+        }
+        return 0;
+      });
+
+      //Separação Ultimo Acesso
+
+      const ultimo_acesso = this.Json2[this.Json2.length - 1].ultimo;
+
+      //FIM Separação Ultimo Acesso
+
+      this.setState({
+        Senhas: Contador0,
+        RFIDs: Contador1,
+        Digitais: Contador2,
+        Json3: this.Json2,
+        ultimo_acesso: ultimo_acesso,
+      });
+
+      //FIM Separação das autenticações Cadastradas
+    });
+
+  }
 
   login(event){
     event.preventDefault()
@@ -43,74 +112,20 @@ class Funcionalidades extends React.Component {
     this.Json2 = [];
     this.Json = [];
     if (!this.state.estado_conexao) {
-      axios.get(this.servico).then((res) => {
-        this.Json = res.data;
-        console.log(this.Json);
-        if (this.Json.lengh < 1) {
-          this.setState({ estado_conexao: false });
-        } else {
-          this.setState({ estado_conexao: true });
-        }
-
-        this.Json = this.Json[0].split("},");
-        this.Json.map((item) => {
-          this.Json2.push(item.includes("}") ? item : item.concat("}"));
-          return 0;
-        });
-        this.Json = [];
-        this.Json2.map((item) => {
-          this.Json.push(item.replaceAll("'", '"'));
-          return 0;
-        });
-        this.Json2 = [];
-        this.Json.map((item) => {
-          item = item.replaceAll(",,", ",");
-          item = item.replaceAll("::", ":");
-          item = item.replaceAll("{{", "{");
-          this.Json2.push(JSON.parse(item));
-          return 0;
-        });
-
-        //Separação das autenticações Cadastradas
-
-        let Contador0 = 0;
-        let Contador1 = 0;
-        let Contador2 = 0;
-
-        this.Json2.map((i) => {
-          if (i.senha !== undefined) {
-            Contador0++;
-          }
-          if (i.rfid !== undefined) {
-            Contador1++;
-          }
-          if (i.digital !== undefined) {
-            Contador2++;
-          }
-          return 0;
-        });
-
-        //Separação Ultimo Acesso
-
-        const ultimo_acesso = this.Json2[this.Json2.length - 1].ultimo;
-
-        //FIM Separação Ultimo Acesso
-
-        this.setState({
-          Senhas: Contador0,
-          RFIDs: Contador1,
-          Digitais: Contador2,
-          Json3: this.Json2,
-          ultimo_acesso: ultimo_acesso,
-        });
-
-        //FIM Separação das autenticações Cadastradas
-      });
+      //TIMER://
+      this.timer = setInterval(() => {
+        console.log('This will be called every 2 seconds');
+        this.conexao()
+      }, 1000);
+    //FIM TIMER://
+    this.conexao()
     }
     if (this.state.estado_conexao) {
-      window.confirm("Tem certeza que deseja se desconectar?")
-        ? this.setState({ estado_conexao: false })
-        : this.setState({ estado_conexao: true });
+      if(window.confirm("Tem certeza que deseja se desconectar?")){
+        this.setState({ estado_conexao: false })
+        clearInterval(this.timer)
+      }
+        else{this.setState({ estado_conexao: true });}
     }
   };
 

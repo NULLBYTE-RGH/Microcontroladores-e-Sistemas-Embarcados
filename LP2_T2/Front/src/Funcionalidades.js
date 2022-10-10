@@ -116,7 +116,6 @@ class Funcionalidades extends React.Component {
     if (!this.state.estado_conexao) {
       //TIMER://
       this.timer = setInterval(() => {
-        console.log("This will be called every 2 seconds");
         this.conexao();
       }, 1000);
       //FIM TIMER://

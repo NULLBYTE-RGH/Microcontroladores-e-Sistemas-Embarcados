@@ -30,6 +30,7 @@ const Cadastro = `http://${IP}:${Porta_Cadastro}/usuarios`;
 const Adicionar = `http://${IP}:${Porta_Cadastro}/adicionar`;
 const Destrancar = `http://${IP}:${Porta_Fechadura}/Destrancar`;
 const Trancar = `http://${IP}:${Porta_Fechadura}/Trancar`;
+const Ultimo = `http://${IP}:${Porta_Cadastro}/ultimo`;
 
 app.get("/GET", (req, res) => {
   axios
@@ -72,5 +73,16 @@ app.get("/TRANC", (req, res) => {
       })
       .then((resposta) => {
         res.sendStatus(resposta);
+      });
+  });
+
+  app.post("/ULT", (req, res) => {
+    axios
+      .post(Ultimo,{data:req.body})
+      .then((res) => {
+        return res.data;
+      })
+      .then((resposta) => {
+        res.sendStatus(200);
       });
   });

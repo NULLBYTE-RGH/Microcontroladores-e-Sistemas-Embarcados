@@ -2,12 +2,15 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "@fortawesome/fontawesome-free/css/all.css";
-
 import sound from "./Orgonite.mp3";
-import axios from 'axios';
+
+const axios = require("axios");
 
 class Funcionalidades extends React.Component {
   //variaveis
+
+  timer = null;
+
   icones = {
     Trancado: "fa-sharp fa-solid fa-lock fa-2x",
     Destrancado: "fa-solid fa-unlock fa-2x",
@@ -16,82 +19,123 @@ class Funcionalidades extends React.Component {
   };
   audio = new Audio(sound);
   //IP ESP32
-  IP_AP='192.168.4.1'
-  //Json é o requisitado 
-  Json = ["{'senha': '1111', 'rfid': '1485898912', 'digital': '0', 'id': '1', 'nome': 'joao'}, {'senha': '2222', 'rfid': '20442135750', 'digital': '0', 'id': '2', 'nome': 'matheus'},  {'senha': '123', 'rrfid': '0', 'digitall': '2', 'id': '3',  'nome': 'marcel'},  {'senha': '123', 'rrfid': '0', 'digitall': '3', 'id': '4',  'nome': 'C'}, {'sennha': '123', 'rfid':: '0', 'digital': '44', 'id': '5', 'nomee': 'D'}, {'senha':  '123', 'rfid': '0',, 'digital': '5', 'iid': '6', 'nome': 'EE'}, {'senha': '123', 'rfid': '0', 'diggital': '6', 'id': '7', 'nome': 'F'}, {{'senha': '123', 'rffid': '0', 'digital': '7', 'id': '8', 'nome': 'G'}, {'ultimo': 'Joao'}"]
-  //json2 é o final após todo o tratamento de erros e formatação
-  Json2 = []
+  IP_AP = "127.0.0.1";
+  Porta = 5000; // porta do Barramento
+  servico = `http://${this.IP_AP}:${this.Porta}/GET`;
+  Trancar = `http://${this.IP_AP}:${this.Porta}/TRANC`;
+  Destrancar = `http://${this.IP_AP}:${this.Porta}/DEST`;
+  //Json é o requisitado
+  Json2 = [];
+  Json = [];
   //--------------------------------------------------------
 
   //metodos
+
+  conexao() {
+    this.Json2 = [];
+    this.Json = [];
+
+    this.setState({ Json3: [] });
+    axios.post(this.servico).then((res) => {
+      this.Json2 = res.data;
+      //console.log(this.Json2); DEBUG
+      if (this.Json2.lengh < 1) {
+        this.setState({ estado_conexao: false });
+      } else {
+        this.setState({ estado_conexao: true });
+      }
+      //Separação das autenticações Cadastradas
+
+      let Contador0 = 0;
+      let Contador1 = 0;
+      let Contador2 = 0;
+
+      this.Json2.map((i) => {
+        if (i.senha !== undefined) {
+          Contador0++;
+        }
+        if (i.rfid !== undefined) {
+          Contador1++;
+        }
+        if (i.digital !== undefined) {
+          Contador2++;
+        }
+        return 0;
+      });
+
+      //Separação Ultimo Acesso
+
+      const ultimo_acesso = this.Json2[this.Json2.length - 1].ultimo;
+
+      //FIM Separação Ultimo Acesso
+
+      this.setState({
+        Senhas: Contador0,
+        RFIDs: Contador1,
+        Digitais: Contador2,
+        Json3: this.Json2,
+        ultimo_acesso: ultimo_acesso,
+      });
+
+      //FIM Separação das autenticações Cadastradas
+    });
+  }
+
+  login(event) {
+    event.preventDefault();
+    this.setState({
+      usuario: event.target.elements.nome.value,
+      senha: event.target.elements.senha.value,
+    });
+  }
+
   conectar = () => {
-    // axios.get(`http://${this.IP_AP}`)
-    // .then(res => {
-    //   const resposta = res.data;
-    //   this.setState({ Lista : resposta });
-    //   this.Json.map(Lista=>console.log(Lista))
-    //   //this.state.Lista.map(Lista => console.log(Lista))
-    // })
+    this.Json2 = [];
+    this.Json = [];
     if (!this.state.estado_conexao) {
-    this.setState({ estado_conexao: true })
-
-    this.Json = this.Json[0].split("},")
-    this.Json.map(item=>{this.Json2.push((item.includes("}")?item:item.concat("}")));return 0 })
-    this.Json = []
-    this.Json2.map(item=>{this.Json.push((item.replaceAll("'",'"')));return 0 })
-    this.Json2 = []
-    this.Json.map(item=>{
-      item = item.replaceAll(",,",',')
-      item = item.replaceAll("::",':')
-      item = item.replaceAll("{{",'{')
-      this.Json2.push(JSON.parse(item))
-      return 0 
-    })
-
-  //Separação das autenticações Cadastradas
-
-    let Contador0 = 0;
-    let Contador1 = 0;
-    let Contador2 = 0;
-
-  this.Json2.map(i=>{
-    if (i.senha !== undefined){
-    Contador0++
+      //TIMER://
+      this.timer = setInterval(() => {
+        this.conexao();
+      }, 1000);
+      //FIM TIMER://
+      this.conexao();
     }
-    if (i.rfid !== undefined){
-      Contador1++
+    if (this.state.estado_conexao) {
+      if (window.confirm("Tem certeza que deseja se desconectar?")) {
+        this.setState({ estado_conexao: false });
+        clearInterval(this.timer);
+      } else {
+        this.setState({ estado_conexao: true });
       }
-    if (i.digital !== undefined){
-      Contador2++
-      }
-    return 0 
-    })
-
-  //Separação Ultimo Acesso
-
-  const ultimo_acesso = this.Json2[(this.Json2.length - 1)].ultimo;
-
-  //FIM Separação Ultimo Acesso
-
-  this.setState({Senhas : Contador0, RFIDs : Contador1, Digitais : Contador2, Json3 : this.Json2, ultimo_acesso : ultimo_acesso})
-
-  //FIM Separação das autenticações Cadastradas
-
-  }
-  if (this.state.estado_conexao) {
-    window.confirm("Tem certeza que deseja se desconectar?")
-      ? this.setState({ estado_conexao: false })
-      : this.setState({ estado_conexao: true });
-  }
+    }
   };
 
-
   destrancar = () => {
-    this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
-    setTimeout(() => {
-      this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
-    }, 3000);
-    console.log(this.state.Json3)
+    if (this.state.estado_conexao) {
+      let json = `{"nome":"${this.state.usuario.toString()}", "senha":"${this.state.senha.toString()}"}`;
+      json = JSON.parse(json);
+      //console.log(json); DEBUG
+      axios
+        .post(this.Destrancar, json)
+        .then((res) => {
+          this.setState({ estado_tranca: this.state.estado_tranca ? 0 : 1 });
+
+          setTimeout(() => {
+            axios.get(this.Trancar).then((res) => {
+              this.setState({
+                estado_tranca: this.state.estado_tranca ? 0 : 1,
+              });
+            });
+          }, 3000);
+        })
+        .catch((erro) => {
+          if (erro.response) {
+            window.alert("Credenciais Incorretas!");
+          }
+        });
+    } else {
+      window.alert("É necessario se Conectar primeiro");
+    }
   };
 
   Tratar_Lista_Acessos = (lista) => {
@@ -107,16 +151,17 @@ class Funcionalidades extends React.Component {
       ultimo_acesso: null,
       estado_conexao: false,
       Numeros_Metodos_Cadastrados: {},
-      Json3:[],
+      Json3: [],
       Senhas: 0,
       Digitais: 0,
-      RFIDs:0 ,
+      RFIDs: 0,
+      usuario: "",
+      senha: "",
     };
+    this.login = this.login.bind(this);
   }
   //--------------------------------------------------------
-  componentDidMount() {
-    
-  }
+  componentDidMount() {}
   //--------------------------------------------------------
   render() {
     return (
@@ -180,13 +225,14 @@ class Funcionalidades extends React.Component {
               >
                 Destrancar
               </button>
+
               {/*Botao de Conec*/}
               {this.state.estado_conexao ? (
                 <button
                   className="btn btn-outline-danger"
                   onClick={this.conectar}
                 >
-                  Desonectar
+                  Desconectar
                 </button>
               ) : (
                 <button
@@ -203,7 +249,44 @@ class Funcionalidades extends React.Component {
         {/*Fim do bloco 1*/}
 
         {/*Lista de ultimo acesso*/}
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-between">
+          <div className="col-4">
+            <div className={`mt-5 p-2 border border-5`}>
+              {/* form de login */}
+              <form className="Auth-form" onSubmit={this.login}>
+                <h3 className="Auth-form-title text-center">Autenticação</h3>
+                <div className="Auth-form-content">
+                  <div className="form-group mt-3">
+                    <label>Nome</label>
+                    <input
+                      type="nome"
+                      name="nome"
+                      className="form-control mt-1"
+                      placeholder="Digite o Nome"
+                      onChange={(event) => {
+                        this.setState({ usuario: event.target.value });
+                      }}
+                    />
+                  </div>
+                  <div className="form-group mt-3">
+                    <label>Senha</label>
+                    <input
+                      type="senha"
+                      name="senha"
+                      className="form-control mt-1"
+                      placeholder="Digite a senha"
+                      onChange={(event) => {
+                        this.setState({ senha: event.target.value });
+                      }}
+                    />
+                  </div>
+                  <div className="d-grid gap-2 mt-3"></div>
+                </div>
+              </form>
+              {/* fim do from de login */}
+            </div>
+          </div>
+
           <div className={`mt-5 p-2 border border-5`}>
             Ultimo Acesso:{" "}
             {this.state.ultimo_acesso
@@ -218,7 +301,7 @@ class Funcionalidades extends React.Component {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Historico de Acessos
+                Usuários
               </button>
               <ul className="dropdown-menu">
                 <li>

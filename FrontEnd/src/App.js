@@ -8,7 +8,7 @@ import Funcionalidades from "./Funcionalidades";
 
 function App() {
   return (
-    <div className="container" style={{minWidth:  "1214px"}}>
+    <div className="container" style={{minWidth:  "520px"}}>
 
 
       <div className="m-auto border border-info border-4 rounded-pill mt-2 text-center">

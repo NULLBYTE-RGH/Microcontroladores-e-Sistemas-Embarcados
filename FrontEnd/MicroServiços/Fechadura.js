@@ -33,7 +33,6 @@ app.post('/destrancar', (req, res) => {
         })
         .then((resposta) => {
             Usuarios = resposta
-            // { senha: '123', rrfid: '0', digitall: '2', id: '3', nome: 'marcel' },
             console.log("Recebido: ")
             console.log(req.body.data)
             Usuarios.map( i => {

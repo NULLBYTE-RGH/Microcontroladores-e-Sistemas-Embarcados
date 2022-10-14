@@ -38,4 +38,4 @@ Microcontroladores-e-Sistemas-Embarcados
 
 ### UI
 
-![alt text](https://github.com/NULLBYTE-RGH/Microcontroladores-e-Sistemas-Embarcados/blob/e398d79846f129d06b47a3bfd9d4dfe6f40615bb/foto/Site%20Fechadura.png)
+![alt text](https://github.com/NULLBYTE-RGH/Arquitetura-de-Sistemas-Computacionais-T2/blob/92e824de3a616be7479e22cee170b40187b5cd5f/foto/Front.PNG)

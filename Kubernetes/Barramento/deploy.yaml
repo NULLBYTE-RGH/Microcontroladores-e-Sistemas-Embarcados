@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservico-barramento
+spec:
+  selector:
+    matchLabels:
+      app: microservico-barramento
+  template:
+    metadata:
+      labels:
+        app: microservico-barramento
+    spec:
+      containers:
+      - name: microservico-barramento
+        image: barramento
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deploy-service-barramento
+spec:
+  selector:
+    app: microservico-barramento
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+    nodePort: 31110

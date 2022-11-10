@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservico-cadastros
+spec:
+  selector:
+    matchLabels:
+      app: microservico-cadastros
+  template:
+    metadata:
+      labels:
+        app: microservico-cadastros
+    spec:
+      containers:
+      - name: microservico-cadastros
+        image: cadastros
+        ports:
+        - containerPort: 7000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deploy-service-cadastros
+spec:
+  selector:
+    app: microservico-cadastros
+  ports:
+  - protocol: TCP
+    port: 7000
+    targetPort: 7000

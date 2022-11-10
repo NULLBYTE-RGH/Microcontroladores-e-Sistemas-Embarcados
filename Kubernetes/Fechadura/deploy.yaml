@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservico-fechadura
+spec:
+  selector:
+    matchLabels:
+      app: microservico-fechadura
+  template:
+    metadata:
+      labels:
+        app: microservico-fechadura
+    spec:
+      containers:
+      - name: microservico-fechadura
+        image: fechadura
+        ports:
+        - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deploy-service-fechadura
+spec:
+  selector:
+    app: microservico-fechadura
+  ports:
+  - protocol: TCP
+    port: 9000
+    targetPort: 9000

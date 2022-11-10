@@ -1,0 +1,16 @@
+barramento {
+docker build -t barramento:novo .
+kubectl create deployment deploy.yaml --image=barramento:novo
+
+}
+
+cadastros{
+docker build -t cadastro:novo .
+kubectl create deployment cadastro --image=cadastro:novo 
+
+}
+
+fechadura{
+docker build -t fechadura:novo .
+kubectl create deployment fechadura --image=fechadura:novo
+}
